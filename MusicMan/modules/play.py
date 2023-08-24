@@ -146,10 +146,10 @@ async def playlist(client, message):
     queue = que.get(message.chat.id)
     if not queue:
         await message.reply_text("**Sedang tidak Memutar lagu**")
-    temp = [t for t in queue]
+    temp = list(queue)
     now_playing = temp[0][0]
     by = temp[0][1].mention(style="md")
-    msg = "**Lagu Yang Sedang dimainkan** di {}".format(message.chat.title)
+    msg = f"**Lagu Yang Sedang dimainkan** di {message.chat.title}"
     msg += "\n• " + now_playing
     msg += "\n• Request Dari " + by
     temp.pop(0)
@@ -170,13 +170,13 @@ async def playlist(client, message):
 def updated_stats(chat, queue, vol=100):
     if chat.id in callsmusic.active_chats:
         # if chat.id in active_chats:
-        stats = "Pengaturan dari **{}**".format(chat.title)
+        stats = f"Pengaturan dari **{chat.title}**"
         if len(que) > 0:
             stats += "\n\n"
-            stats += "Volume : {}%\n".format(vol)
-            stats += "Lagu dalam antrian : `{}`\n".format(len(que))
-            stats += "Sedang memutar lagu : **{}**\n".format(queue[0][0])
-            stats += "Requested by : {}".format(queue[0][1].mention)
+            stats += f"Volume : {vol}%\n"
+            stats += f"Lagu dalam antrian : `{len(que)}`\n"
+            stats += f"Sedang memutar lagu : **{queue[0][0]}**\n"
+            stats += f"Requested by : {queue[0][1].mention}"
     else:
         stats = None
     return stats
@@ -204,8 +204,7 @@ async def ee(client, message):
     if message.chat.id in DISABLED_GROUPS:
         return
     queue = que.get(message.chat.id)
-    stats = updated_stats(message.chat, queue)
-    if stats:
+    if stats := updated_stats(message.chat, queue):
         await message.reply(stats)
     else:
         await message.reply("**Silahkan Nyalakan dulu VCG nya!**")
@@ -216,14 +215,11 @@ async def ee(client, message):
 async def settings(client, message):
     if message.chat.id in DISABLED_GROUPS:
         await message.reply("Music Player is Disabled")
-        return    
-    playing = None
+        return
     chat_id = get_chat_id(message.chat)
-    if chat_id in callsmusic.active_chats:
-        playing = True
+    playing = True if chat_id in callsmusic.active_chats else None
     queue = que.get(chat_id)
-    stats = updated_stats(message.chat, queue)
-    if stats:
+    if stats := updated_stats(message.chat, queue):
         if playing:
             await message.reply(stats, reply_markup=r_ply("pause")) 
         else:
@@ -287,10 +283,10 @@ async def p_cb(b, cb):
         queue = que.get(cb.message.chat.id)
         if not queue:
             await cb.message.edit("**Sedang tidak Memutar lagu**")
-        temp = [t for t in queue]
+        temp = list(queue)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "<b>Lagu Yang Sedang dimainkan</b> di {}".format(cb.message.chat.title)
+        msg = f"<b>Lagu Yang Sedang dimainkan</b> di {cb.message.chat.title}"
         msg += "\n- " + now_playing
         msg += "\n- Request Dari " + by
         temp.pop(0)
@@ -352,10 +348,10 @@ async def m_cb(b, cb):
         queue = que.get(cb.message.chat.id)
         if not queue:
             await cb.message.edit("**Sedang tidak Memutar lagu**")
-        temp = [t for t in queue]
+        temp = list(queue)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "**Lagu Yang Sedang dimainkan** di {}".format(cb.message.chat.title)
+        msg = f"**Lagu Yang Sedang dimainkan** di {cb.message.chat.title}"
         msg += "\n- " + now_playing
         msg += "\n- Request Dari " + by
         temp.pop(0)

@@ -166,12 +166,13 @@ async def start(client: Client, message: Message):
 @Client.on_message(filters.command("help") & ~filters.private & ~filters.channel)
 async def ghelp(_, message: Message):
     await message.reply_text(
-        f"""**Klik Tombol dibawah untuk Melihat Cara Menggunakan Bot**""",
+        """**Klik Tombol dibawah untuk Melihat Cara Menggunakan Bot**""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "📜 Cara Menggunakan BOT 📜", url=f"https://t.me/{BOT_USERNAME}?start"
+                        "📜 Cara Menggunakan BOT 📜",
+                        url=f"https://t.me/{BOT_USERNAME}?start",
                     )
                 ]
             ]

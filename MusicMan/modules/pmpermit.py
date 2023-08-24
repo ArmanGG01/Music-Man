@@ -44,18 +44,19 @@ async def pmPermit(client: USER, message: Message):
 
 @Client.on_message(filters.command(["/pmpermit"]))
 async def bye(client: Client, message: Message):
-    if message.from_user.id in SUDO_USERS:
-        global PMSET
-        text = message.text.split(" ", 1)
-        queryy = text[1]
-        if queryy == "on":
-            PMSET = True
-            await message.reply_text("**Pmpermit dinyalakan**")
-            return
-        if queryy == "off":
-            PMSET = None
-            await message.reply_text("**Pmpermit dimatikan**")
-            return
+    if message.from_user.id not in SUDO_USERS:
+        return
+    global PMSET
+    text = message.text.split(" ", 1)
+    queryy = text[1]
+    if queryy == "on":
+        PMSET = True
+        await message.reply_text("**Pmpermit dinyalakan**")
+        return
+    if queryy == "off":
+        PMSET = None
+        await message.reply_text("**Pmpermit dimatikan**")
+        return
 
 @USER.on_message(filters.text & filters.private & filters.me)
 async def autopmPermiat(client: USER, message: Message):
